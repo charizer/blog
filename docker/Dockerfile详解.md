@@ -1,5 +1,5 @@
 
-##<span id="menu">[FROM 指定基础镜像](#from)</span>
+<span id="menu">[FROM 指定基础镜像](#from)</span>
 
 [RUN 执行构建](#run)
 
