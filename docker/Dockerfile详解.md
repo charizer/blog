@@ -1,4 +1,6 @@
 
+<span id="menu">[命令列表]</span>
+
 [FROM 指定基础镜像](#from)
 
 [RUN 执行构建](#run)
@@ -20,7 +22,7 @@
 [VOLUME 设置数据卷](#volume)
 
 
-### <span id="from">FROM 指定基础镜像</span>
+### <span id="from">[FROM 指定基础镜像](menu)</span>
 
 FROM 指令表示将来构建的镜像是来自哪个镜像，也就是使用哪个镜像作为基础进行构建。 一般情况下 Dockerfile 都有基础镜像， FROM 指令必须是整个 Dockerfile 的第一句有效指令。
 FROM 的格式如下:
