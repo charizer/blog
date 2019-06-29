@@ -1,5 +1,8 @@
-<!-- TOC -->autoauto- [FROM 指定基础镜像](#from-指定基础镜像)auto- [RUN 执行构建](#run-执行构建)auto- [ENV 设置镜像环境变量](#env-设置镜像环境变量)auto- [COPY 复制文件](#copy-复制文件)auto- [ADD 添加文件](#add-添加文件)auto- [EXPOSE 暴露指定端口](#expose-暴露指定端口)auto- [CMD 设置镜像启动命令](#cmd-设置镜像启动命令)auto- [ENTRYPOINT 设置接入点](#entrypoint-设置接入点)auto- [WORKDIR 设置工作目录](#workdir-设置工作目录)auto- [VOLUME 设置数据卷](#volume-设置数据卷)autoauto<!-- /TOC -->
-## FROM 指定基础镜像
+
+[FROM 指定基础镜像](#from)
+[RUN 执行构建](#run)
+
+## <span id="from">FROM 指定基础镜像</span>
 
 FROM 指令表示将来构建的镜像是来自哪个镜像，也就是使用哪个镜像作为基础进行构建。 一般情况下 Dockerfile 都有基础镜像， FROM 指令必须是整个 Dockerfile 的第一句有效指令。
 FROM 的格式如下:
@@ -8,7 +11,7 @@ FROM <ImagesName : tag>
 ```
 当同一个 Dockerfile 构建几个镜像时，可以写多个 FROM 指令，比如同时用ubuntu 和 Debian作为基础镜像构建一个系列的镜像，执行构建会使用最后一句 FROM语句。
 
-## RUN 执行构建
+## <span id="run">RUN 执行构建</span>
 
 这条指令用来在 Docker 的编译环境中运行指定命令 。 RUN 会在 shell 或者 exec 的环境下执行命令。
 shell 格式如下:
