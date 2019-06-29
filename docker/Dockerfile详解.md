@@ -3,7 +3,24 @@
 
 [RUN 执行构建](#run)
 
-## <span id="from">FROM 指定基础镜像</span>
+[ENV 设置镜像环境变量](#env)
+
+[COPY 复制文件](#copy)
+
+[ADD 添加文件](#add)
+
+[EXPOSE 暴露指定端口](#expose)
+
+[CMD 设置镜像启动命令](#cmd)
+
+[ENTRYPOINT 设置接入点](#entrypoint)
+
+[WORKDIR 设置工作目录](#workdir)
+
+[VOLUME 设置数据卷](#volume)
+
+
+### <span id="from">FROM 指定基础镜像</span>
 
 FROM 指令表示将来构建的镜像是来自哪个镜像，也就是使用哪个镜像作为基础进行构建。 一般情况下 Dockerfile 都有基础镜像， FROM 指令必须是整个 Dockerfile 的第一句有效指令。
 FROM 的格式如下:
@@ -12,7 +29,7 @@ FROM <ImagesName : tag>
 ```
 当同一个 Dockerfile 构建几个镜像时，可以写多个 FROM 指令，比如同时用ubuntu 和 Debian作为基础镜像构建一个系列的镜像，执行构建会使用最后一句 FROM语句。
 
-## <span id="run">RUN 执行构建</span>
+### <span id="run">RUN 执行构建</span>
 
 这条指令用来在 Docker 的编译环境中运行指定命令 。 RUN 会在 shell 或者 exec 的环境下执行命令。
 shell 格式如下:
@@ -24,7 +41,7 @@ RUN 指令还有另外一种格式(exec格式〉: RUN [”程序名 ”，”参
 这种格式运行程序，可以免除运行/bin/sh 的消耗 。 这种格式使用 JSON 格式将程序名 与所需参数组成-个字符串数组，所以如果参数中有引号等特殊字符，需要进行转义。
 exec 格式不会触发 shell，所以$HOME 这样 的环境变量无法使用，但它可以在没有 bash的镜像中执行 ，而且可以避免错误的解析命令字符串。
 
-## ENV 设置镜像环境变量
+### <span id="env">ENV 设置镜像环境变量</span>
 
 ENV 指令用来指定在执行 dockerrun 命令运行镜像时，自动设置的环境变量。这个环境变量可以在后续任何 RUN 指令中使用 ， 并在容器运行时保持，而且可以通过 docker run 命令的 -e 参数来修改环境变量。
 ENV 指令语法如下 : 
@@ -37,14 +54,14 @@ ENV TARGET_DIR /app
 WORKDIR ${TARGET_DIR}
 ```
 
-## COPY 复制文件
+### <span id="copy">COPY 复制文件</span>
 
 COPY 指令用来将本地的文件或文件夹复制到镜像的指定路径下 。格式如下:
 ```
 COPY /Local/Path/File /Images/Path/File
 ```
 
-## ADD 添加文件
+### <span id="add">ADD 添加文件</span>
 
 ADD 和 COPY 作用相似，但实现不同。 ADD 指令可以从一个 URL 地址下载内容复制 到容器的文件系统中 ，还可以将压缩打包格式 的文件解开后复制到指定位置。
 ADD 指令格式如下 :
@@ -54,7 +71,7 @@ ADD latest.tar.gz /var/www/
 ```
 在相同的复制命令下，使用 ADD 构建镜像的大小比 COPY 指令构建的镜像要大 ， 所以如果只是复制文件可以使用 COPY指令。
 
-## EXPOSE 暴露指定端口
+### <span id="expose">EXPOSE 暴露指定端口</span>
 
 EXPOSE 指令格式如下:
 ```
@@ -63,7 +80,7 @@ EXPOSE <端口>[{端口}...]
 EXPOSE 指令用于标明这个镜像中的应用将会侦昕某个端口，并且希望能将这个端口映射到主机的网络界面上。但是为了安全， docker run 命令如果没有带上响应的端口映射参数 ， Docker 并不会将端口映射出去。
 此外 EXPOSE 端口是可以在多个容器之间通信用 (links)，通过 --links 参数可以让多个容器通过端口连接在一起。
 
-## CMD 设置镜像启动命令
+### <span id="cmd">CMD 设置镜像启动命令</span>
 
 CMD 提供了容器默认的执行命令。 Dockerfile 只允许使用 一次 CMD 指令。使用多个 CMD会抵消之前所有的指令，只有最后一个指令生效。 一般来说这是整个Dockerfile脚本 的最后一条指令。当 Dockerfile 已经完成了所有环境的安装与配置，通过 CMD 指令来指 示 docker run 命令运行镜像时要执行的命令。格式如下 :
 ```
@@ -92,7 +109,7 @@ Hello Docker
 当使用 docker run test echo 方式启动容器时， echo ”Hello Docker，，命令会覆盖原有 CMD 指令。也就是说 CMD 指令可以通过 docker run 命令覆盖。这一点也是 CMD 和 ENTRYPOINT 指令的最大区别。
 CMD 与 RUN 的区别在于， RUN 是在 build 成镜像时就运行的，先于 C孔。和 ENTRYPOINT, CMD 会在每次启动容器的时候运行，而 RUN 只在创建镜像时执行 一 次， 固化在 image 中。
 
-## ENTRYPOINT 设置接入点
+### <span id="entrypoint">ENTRYPOINT 设置接入点</span>
 
 这个指令和 CMD 很相似。 ENTRYPOINT 相当于把镜像变成一个固 定的命令工具 ，它一般是不可以通过 docker run 来改变的。而 CMD
 不同， CMD 是可以通过启动命令修改内容 的 。 二者的主要区别通过实践会体会得更清晰。实验 Dockerfile 如 下 :
@@ -113,7 +130,7 @@ Hello Docker
 ```
 可以看到，在 ENTRYPOINT 指令下 ， 容器就像一个 echo 程序， docker run 后续参数 就成了 echo 的参数。
 
-## WORKDIR 设置工作目录
+### <span id="workdir">WORKDIR 设置工作目录</span>
 
 WORKDIR 指令指定 RUN, CMD 与 ENTRYPOINT 命令的工作目录。语法如下:
 ```
@@ -127,7 +144,7 @@ WORKDIR c
 ```
 则最终路径为/a/b/c。
 
-## VOLUME 设置数据卷
+### <span id="volume">VOLUME 设置数据卷</span>
 
 VOLUME 指令用来 向基于镜像创建的容器添加数据卷(在容器中设置一个挂载点， 可 以用来让其他容器挂载或让宿主机访问，以 实现数据共享或对容器数据的备份、恢复或 迁移〉。数据卷可以在容器问共享和重用。数据卷的修改是立即生效的。数据卷的修改不 会对更新镜像产生影 响 。数据卷会一直存在 ， 直到没有任何容器使用它(没有使用它也会 在宿主机存在 ，但就不是数据卷了 ，和普通文件无异)。 VOLUME 指令在后面还会详细 介绍，这里只做简单使用说明。
 VOLUME 指令格式如下 :
