@@ -18,6 +18,16 @@ panic退出
 
 ##### 示例
 ```
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"runtime"
+	"time"
+	"os"
+)
+
 func main() {
 	newRandStream := func() <-chan int {
 		randStream := make(chan int)
